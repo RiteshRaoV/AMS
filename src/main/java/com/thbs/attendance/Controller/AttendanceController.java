@@ -1,9 +1,10 @@
 package com.thbs.attendance.Controller;
 
+
+
 import com.thbs.attendance.DTO.UpdateAttendanceDTO;
 import com.thbs.attendance.Service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,12 +16,13 @@ public class AttendanceController {
     @Autowired
     private AttendanceService attendanceService;
 
-    @PostMapping("/attendance")
-    public ResponseEntity<?> updateAttendance(@RequestBody UpdateAttendanceDTO updateAttendance) {
-        attendanceService.updateAttendance(updateAttendance);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @PostMapping("/updateAttendance")
+    public ResponseEntity<?> updateAttendance(@RequestBody UpdateAttendanceDTO updateAttendanceDTO) {
+        attendanceService.updateAttendance(updateAttendanceDTO);
+        return ResponseEntity.ok().build();
     }
 }
+
 
 
 // {
