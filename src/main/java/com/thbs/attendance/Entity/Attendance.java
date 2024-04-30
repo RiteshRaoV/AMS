@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Date;
 import java.util.List;
 
 @Getter
@@ -13,9 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Attendance {
-    private String batchId;
-    private String courseId;
+    private Long batchId;
+    private Long courseId;
     private String type;
-    private String date;
+    private Date date;
     private List<AttendanceDetail> attendance;
 }

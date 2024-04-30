@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttendanceDetail {
-    private String userId;
+    private Long userId;
     private String status;
 }
 

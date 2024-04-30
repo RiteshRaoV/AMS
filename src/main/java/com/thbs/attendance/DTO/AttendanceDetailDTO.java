@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class AttendanceDetailDTO {
-    private String userId;
+    private Long userId;
     private String status;
 }
 
