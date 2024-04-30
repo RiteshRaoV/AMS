@@ -14,7 +14,7 @@ public class UpdateAttendanceDTO {
     private Long batchId;
     private Long courseId;
     private String type;
-    private Date date;
+    private String date;
     private List<AttendanceDetailDTO> attendance;
     public List<AttendanceDetail> attendanceDtoToAttendanceDetails(){
         List<AttendanceDetail> res=new ArrayList<>();

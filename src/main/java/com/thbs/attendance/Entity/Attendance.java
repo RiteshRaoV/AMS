@@ -17,6 +17,6 @@ public class Attendance {
     private Long batchId;
     private Long courseId;
     private String type;
-    private Date date;
+    private String date;
     private List<AttendanceDetail> attendance;
 }
