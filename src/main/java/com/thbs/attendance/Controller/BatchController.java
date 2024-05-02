@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.thbs.attendance.DTO.BatchCourseDTO;
 import com.thbs.attendance.DTO.BatchesDTO;
+import com.thbs.attendance.DTO.EmployeeDTO;
 import com.thbs.attendance.Service.BatchService;
 
 @RestController
@@ -20,17 +21,21 @@ public class BatchController {
     @Autowired
     BatchService batchService;
 
-
     @GetMapping("/{batchId}/courses")
-    public ResponseEntity<BatchCourseDTO> getCourses(@PathVariable long batchId){
-        BatchCourseDTO batchCourseDTO=batchService.getCourses(batchId);
+    public ResponseEntity<BatchCourseDTO> getCourses(@PathVariable long batchId) {
+        BatchCourseDTO batchCourseDTO = batchService.getCourses(batchId);
         return ResponseEntity.ok(batchCourseDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<BatchesDTO>> getBatches(){
-        List<BatchesDTO> batchesDTO=batchService.getBatches();
+    public ResponseEntity<List<BatchesDTO>> getBatches() {
+        List<BatchesDTO> batchesDTO = batchService.getBatches();
         return ResponseEntity.ok(batchesDTO);
+    }
+
+    @GetMapping("/employees/{batchId}")
+    public List<EmployeeDTO> getEmployeesByBatchId(@PathVariable long batchId) {
+        return batchService.getEmployeesByBatchId(batchId);
     }
 
 }

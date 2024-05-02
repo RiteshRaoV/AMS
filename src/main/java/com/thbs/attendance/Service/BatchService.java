@@ -1,6 +1,7 @@
 package com.thbs.attendance.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.thbs.attendance.DTO.BatchCourseDTO;
 import com.thbs.attendance.DTO.BatchesDTO;
 import com.thbs.attendance.DTO.CourseDTO;
 import com.thbs.attendance.DTO.Courses;
+import com.thbs.attendance.DTO.EmployeeDTO;
 import com.thbs.attendance.DTO.LearningPlanDTO;
 import com.thbs.attendance.DTO.PathDTO;
 
@@ -79,5 +81,17 @@ public class BatchService {
                 });
 
         return response.getBody();
+    }
+
+    // public List<EmployeeDTO> getEmployeesByBatchId(long batchId) {
+    //     String url = batchServiceUri + "/batch-id/employees/"+ batchId;
+    //     EmployeeDTO[] employeeArray = restTemplate.getForObject(url, EmployeeDTO[].class);
+    //     return Arrays.asList(employeeArray);
+    // }
+
+    public List<EmployeeDTO> getEmployeesByBatchId(long batchId) {
+        String url = batchServiceUri + "/batch-details/employees/" + batchId;
+        EmployeeDTO[] employeeArray = restTemplate.getForObject(url, EmployeeDTO[].class);
+        return Arrays.asList(employeeArray);
     }
 }
