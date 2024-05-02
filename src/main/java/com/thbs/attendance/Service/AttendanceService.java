@@ -23,14 +23,7 @@ public class AttendanceService {
     @Autowired
     private AttendanceRepository attendanceRepository;
 
-    private final MongoClient mongoClient;
-    private final MongoCollection<Document> attendanceCollection;
 
-    public AttendanceService() {
-        this.mongoClient = MongoClients.create("mongodb://localhost:27017");
-        MongoDatabase database = mongoClient.getDatabase("AMS");
-        this.attendanceCollection = database.getCollection("attendance");
-    }
 
     public Attendance processAttendanceUpdate(AttendanceUpdateDTO attendanceData) {
         Long batchId = attendanceData.getBatchId();
@@ -38,8 +31,10 @@ public class AttendanceService {
         String date = attendanceData.getDate();
         String type = attendanceData.getType();
         List<AttendanceDetailDTO> newAttendance = attendanceData.getAttendance();
+        List<Attendance> list=new ArrayList<>();
         for (AttendanceDetailDTO details : newAttendance) {
-            Attendance record = attendanceRepository.findByUserIdAndBatchIdAndCourseId(details.getUserId(), courseId, batchId);
+            Attendance record = attendanceRepository.findByUserIdAndCourseIdAndBatchId(details.getUserId(), courseId, batchId);
+            list.add(record);
             if(record!=null){
                 AttendanceDetail detail=new AttendanceDetail(date,type,details.getStatus());
                 record.getAttendance().add(detail);
