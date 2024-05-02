@@ -12,7 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AttendanceDetail {
-    private Long userId;
+    private String date;
+    private String type;
     private String status;
 }
 

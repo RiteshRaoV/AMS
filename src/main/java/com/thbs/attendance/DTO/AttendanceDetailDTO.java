@@ -1,12 +1,15 @@
 package com.thbs.attendance.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import lombok.Data;
-
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class AttendanceDetailDTO {
     private Long userId;
     private String status;
 }
-
-
