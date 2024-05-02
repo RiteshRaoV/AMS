@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AttendanceRepository extends MongoRepository<Attendance, String> {
+    Attendance findByUserIdAndBatchIdAndCourseId(Long userId, Long batchId, Long courseId);
+
 }
 
 
