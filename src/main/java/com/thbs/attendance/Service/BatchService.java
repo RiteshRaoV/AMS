@@ -70,24 +70,10 @@ public class BatchService {
     }
 
     public List<BatchesDTO> getBatches() {
-        String uri = UriComponentsBuilder.fromUriString(batchServiceUri)
-                .toUriString();
-
-        ResponseEntity<List<BatchesDTO>> response = restTemplate.exchange(
-                uri,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<BatchesDTO>>() {
-                });
-
-        return response.getBody();
+        String uri = UriComponentsBuilder.fromUriString(batchServiceUri).toUriString();
+        BatchesDTO[] response = restTemplate.getForObject(uri, BatchesDTO[].class);
+        return Arrays.asList(response);
     }
-
-    // public List<EmployeeDTO> getEmployeesByBatchId(long batchId) {
-    //     String url = batchServiceUri + "/batch-id/employees/"+ batchId;
-    //     EmployeeDTO[] employeeArray = restTemplate.getForObject(url, EmployeeDTO[].class);
-    //     return Arrays.asList(employeeArray);
-    // }
 
     public List<EmployeeDTO> getEmployeesByBatchId(long batchId) {
         String url = batchServiceUri + "/batch-details/employees/" + batchId;
