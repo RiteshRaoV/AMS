@@ -25,6 +25,7 @@ public class AttendanceService {
     @Autowired
     private BatchService batchService;
 
+    //this method handles the user document creation,updation and adding new attendance record
     public Attendance processAttendanceUpdate(AttendanceUpdateDTO attendanceData) {
         Long batchId = attendanceData.getBatchId();
         Long courseId = attendanceData.getCourseId();
@@ -36,32 +37,39 @@ public class AttendanceService {
             Attendance record = attendanceRepository.findByUserIdAndCourseIdAndBatchId(details.getUserId(), courseId,
                     batchId);
             if (record != null) {
-                boolean updated = false;
-                List<AttendanceDetail> attendanceList = record.getAttendance();
-                for (AttendanceDetail obj : attendanceList) {
-                    if (obj.getDate().equals(date) && obj.getType().equals(type)) {
-                        obj.setStatus(details.getStatus());
-                        updated = true;
-                        break;
-                    }
-                }
-                if (!updated) {
-                    AttendanceDetail newDetail = new AttendanceDetail(date, type, details.getStatus());
-                    attendanceList.add(newDetail);
-                }
-                attendanceRepository.save(record);
+                updateExistingAttendanceDetail(record, date, type, details.getStatus());
             } else {
-                List<AttendanceDetail> attendanceList = new ArrayList<>();
-                attendanceList.add(new AttendanceDetail(date, type, details.getStatus()));
-                Attendance newAttendanceRecord = new Attendance(batchId, courseId, details.getUserId(), attendanceList);
-                attendanceRepository.save(newAttendanceRecord);
+                createNewAttendanceRecord(batchId, courseId, details.getUserId(), date, type, details.getStatus());
             }
         }
         return null;
     }
 
-    public List<EmployeeAttendanceDTO> getAttendanceDetails(Long batchID, Long courseId, String date, String type)
-            throws IllegalArgumentException {
+    //handles the updation of the attendance for a particular day
+    private void updateExistingAttendanceDetail(Attendance record, String date, String type, String status) {
+        List<AttendanceDetail> attendanceList = record.getAttendance();
+        for (AttendanceDetail obj : attendanceList) {
+            if (obj.getDate().equals(date) && obj.getType().equals(type)) {
+                obj.setStatus(status);
+                attendanceRepository.save(record);
+                return;
+            }
+        }
+        AttendanceDetail newDetail = new AttendanceDetail(date, type, status);
+        attendanceList.add(newDetail);
+        attendanceRepository.save(record);
+    }
+
+    //handles adding a new attendance record to the existing document
+    private void createNewAttendanceRecord(Long batchId, Long courseId, Long userId, String date, String type,
+            String status) {
+        List<AttendanceDetail> attendanceList = new ArrayList<>();
+        attendanceList.add(new AttendanceDetail(date, type, status));
+        Attendance newAttendanceRecord = new Attendance(batchId, courseId, userId, attendanceList);
+        attendanceRepository.save(newAttendanceRecord);
+    }
+
+    public List<EmployeeAttendanceDTO> getAttendanceDetails(Long batchID, Long courseId, String date, String type) {
         List<EmployeeDTO> employees = batchService.getEmployeesByBatchId(batchID);
         List<Attendance> attendances = attendanceRepository.findByBatchIdAndCourseId(batchID, courseId);
         if (!attendances.isEmpty()) {
