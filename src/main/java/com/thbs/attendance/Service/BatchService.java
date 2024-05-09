@@ -1,6 +1,5 @@
 package com.thbs.attendance.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,11 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.thbs.attendance.DTO.BatchCourseDTO;
 import com.thbs.attendance.DTO.BatchesDTO;
-import com.thbs.attendance.DTO.CourseDTO;
-import com.thbs.attendance.DTO.Courses;
 import com.thbs.attendance.DTO.EmployeeDTO;
-import com.thbs.attendance.DTO.LearningPlanDTO;
-import com.thbs.attendance.DTO.PathDTO;
 
 @Service
 public class BatchService {
@@ -38,49 +33,20 @@ public class BatchService {
 
     public BatchCourseDTO getCourses(long batchId) {
 
-        // // Build the URI with the batchId path variable
-        // String uri = UriComponentsBuilder.fromUriString(learningPlanServiceUri)
-        // .buildAndExpand(batchId)
-        // .toUriString();
+        // Build the URI with the batchId path variable
+        String uri = UriComponentsBuilder.fromUriString(learningPlanServiceUri)
+        .buildAndExpand(batchId)
+        .toUriString();
 
-        // // Make the GET request to the URI
-        // ResponseEntity<List<LearningPlanDTO>> response = restTemplate.exchange(
-        // uri,
-        // HttpMethod.GET,
-        // null,
-        // new ParameterizedTypeReference<List<LearningPlanDTO>>() {
-        // });
+        // Make the GET request to the URI
+        ResponseEntity<BatchCourseDTO> response = restTemplate.exchange(
+        uri,
+        HttpMethod.GET,
+        null,
+        new ParameterizedTypeReference<BatchCourseDTO>() {
+        });
 
-        // BatchCourseDTO batchCourseDTO = new BatchCourseDTO();
-        // batchCourseDTO.setBatchId(batchId);
-
-        // List<LearningPlanDTO> learningPlanDTOs = response.getBody();
-        // if (learningPlanDTOs != null) {
-        // List<Courses> courses = new ArrayList<>();
-        // for (LearningPlanDTO learningPlanDTO : learningPlanDTOs) {
-        // for (PathDTO path : learningPlanDTO.getPath()) {
-        // CourseDTO courseDTO = path.getCourse();
-        // long courseId = courseDTO.getCourseId();
-        // String courseName = courseDTO.getCourseName();
-        // Courses course = new Courses(courseId, courseName);
-        // courses.add(course);
-        // }
-        // }
-        // batchCourseDTO.setCourses(courses);
-        // }
-        BatchCourseDTO batchCourseDTO = new BatchCourseDTO();
-        batchCourseDTO.setBatchId(batchId);
-
-        Courses course1 = new Courses(101L, "Introduction to Programming");
-        Courses course2 = new Courses(102L, "Database Management Systems");
-        Courses course3 = new Courses(103L, "Web Development");
-
-        List<Courses> courses = new ArrayList<>();
-        courses.add(course1);
-        courses.add(course2);
-        courses.add(course3);
-
-        batchCourseDTO.setCourses(courses);
+        BatchCourseDTO batchCourseDTO = response.getBody();
 
         return batchCourseDTO;
     }

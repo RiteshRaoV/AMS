@@ -25,7 +25,8 @@ public class AttendanceService {
     @Autowired
     private BatchService batchService;
 
-    //this method handles the user document creation,updation and adding new attendance record
+    // this method handles the user document creation,updation and adding new
+    // attendance record
     public Attendance processAttendanceUpdate(AttendanceUpdateDTO attendanceData) {
         Long batchId = attendanceData.getBatchId();
         Long courseId = attendanceData.getCourseId();
@@ -45,7 +46,7 @@ public class AttendanceService {
         return null;
     }
 
-    //handles the updation of the attendance for a particular day
+    // handles the updation of the attendance for a particular day
     private void updateExistingAttendanceDetail(Attendance record, String date, String type, String status) {
         List<AttendanceDetail> attendanceList = record.getAttendance();
         for (AttendanceDetail obj : attendanceList) {
@@ -60,7 +61,7 @@ public class AttendanceService {
         attendanceRepository.save(record);
     }
 
-    //handles adding a new attendance record to the existing document
+    // handles adding a new attendance record to the existing document
     private void createNewAttendanceRecord(Long batchId, Long courseId, Long userId, String date, String type,
             String status) {
         List<AttendanceDetail> attendanceList = new ArrayList<>();
@@ -82,26 +83,28 @@ public class AttendanceService {
                     }
                 }
             }
+            if (!attendanceMap.isEmpty()) {
+                List<EmployeeAttendanceDTO> response = new ArrayList<>();
+                for (EmployeeDTO employee : employees) {
+                    EmployeeAttendanceDTO employeeAttendanceDTO = new EmployeeAttendanceDTO();
+                    employeeAttendanceDTO.setEmployeeId(employee.getEmployeeId());
+                    employeeAttendanceDTO.setFirstName(employee.getFirstName());
+                    employeeAttendanceDTO.setLastName(employee.getLastName());
+                    employeeAttendanceDTO.setEmail(employee.getEmail());
+                    employeeAttendanceDTO.setBusinessUnit(employee.getBusinessUnit());
+                    employeeAttendanceDTO.setRole(employee.getRole());
 
-            List<EmployeeAttendanceDTO> response = new ArrayList<>();
-            for (EmployeeDTO employee : employees) {
-                EmployeeAttendanceDTO employeeAttendanceDTO = new EmployeeAttendanceDTO();
-                employeeAttendanceDTO.setEmployeeId(employee.getEmployeeId());
-                employeeAttendanceDTO.setFirstName(employee.getFirstName());
-                employeeAttendanceDTO.setLastName(employee.getLastName());
-                employeeAttendanceDTO.setEmail(employee.getEmail());
-                employeeAttendanceDTO.setBusinessUnit(employee.getBusinessUnit());
-                employeeAttendanceDTO.setRole(employee.getRole());
+                    String status = attendanceMap.get(employee.getEmployeeId());
+                    if (status != null) {
+                        employeeAttendanceDTO.setStatus(status);
+                    }
 
-                String status = attendanceMap.get(employee.getEmployeeId());
-                if (status != null) {
-                    employeeAttendanceDTO.setStatus(status);
+                    response.add(employeeAttendanceDTO);
                 }
-
-                response.add(employeeAttendanceDTO);
+                return response;
+            } else {
+                return null;
             }
-
-            return response;
         }
         return null;
     }
