@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 @RestController
 public class AttendanceHistoryController {
 
@@ -23,21 +24,19 @@ public class AttendanceHistoryController {
     @GetMapping("/attendance/batch/{batchID}/course/{courseId}/Date/{date}/type/{type}")
     public ResponseEntity<?> updateAttendance(@PathVariable Long batchID,
             @PathVariable Long courseId, @PathVariable String date, @PathVariable String type) {
-
-        List<EmployeeAttendanceDTO> attendanceDetails = attendanceService.getAttendanceDetails(batchID, courseId, date,
-                type);
-
+        
+        List<EmployeeAttendanceDTO> attendanceDetails = attendanceService.getAttendanceDetails(batchID, courseId, date, type);
+        
         if (attendanceDetails != null && !attendanceDetails.isEmpty()) {
             return ResponseEntity.ok(attendanceDetails);
         }
-
+        
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No attendance data found");
     }
 
     @GetMapping("/attendance/batch/{batchID}/course/{courseId}/Date/{date}")
-    public ResponseEntity<List<String>> getAvailableSlots(@PathVariable Long batchID, @PathVariable Long courseId,
-            @PathVariable String date) {
-        return ResponseEntity.ok(attendanceService.getAvailableSlots(batchID, courseId, date));
+    public ResponseEntity<List<String>> getAvailableSlots(@PathVariable Long batchID,@PathVariable Long courseId,@PathVariable String date) {
+        return ResponseEntity.ok(attendanceService.getAvailableSlots(batchID,courseId,date));
     }
-
+    
 }

@@ -10,6 +10,7 @@ import com.thbs.attendance.Repository.AttendanceRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -125,6 +126,8 @@ public class AttendanceService {
         }
         if(takenSlots.isEmpty()){
             availableSlots.addAll(Arrays.asList("First Half","Second Half","Full Day"));
+        }else if(takenSlots.contains("First Half") && takenSlots.contains("Second Half")){
+            return Collections.emptyList();
         }
         else if(takenSlots.contains("First Half")){
             availableSlots.add("Second Half");
