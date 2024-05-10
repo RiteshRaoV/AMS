@@ -9,9 +9,12 @@ import com.thbs.attendance.Entity.AttendanceDetail;
 import com.thbs.attendance.Repository.AttendanceRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,6 +110,30 @@ public class AttendanceService {
             }
         }
         return null;
+    }
+
+    public List<String> getAvailableSlots(long batchID,long courseId,String date){
+        List<Attendance> attendances = attendanceRepository.findByBatchIdAndCourseId(batchID, courseId);
+        Set<String> takenSlots=new HashSet();
+        List<String> availableSlots=new ArrayList<>();
+        for(Attendance attendance:attendances){
+            for(AttendanceDetail attendanceDetail:attendance.getAttendance()){
+                if(attendanceDetail.getDate().equals(date)){
+                    takenSlots.add(attendanceDetail.getType());
+                }
+            }
+        }
+        if(takenSlots.isEmpty()){
+            availableSlots.addAll(Arrays.asList("First Half","Second Half","Full Day"));
+        }
+        else if(takenSlots.contains("First Half")){
+            availableSlots.add("Second Half");
+        }
+        else if(takenSlots.contains("Second Half")){
+            availableSlots.add("First Half");
+        }
+
+        return availableSlots;
     }
 
 }
