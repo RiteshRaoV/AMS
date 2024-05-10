@@ -12,6 +12,8 @@ import com.thbs.attendance.Service.AttendanceService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class AttendanceHistoryController {
@@ -32,4 +34,9 @@ public class AttendanceHistoryController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No attendance data found");
     }
 
+    @GetMapping("/attendance/batch/{batchID}/course/{courseId}/Date/{date}")
+    public ResponseEntity<List<String>> getAvailableSlots(@PathVariable Long batchID,@PathVariable Long courseId,@PathVariable String date) {
+        return ResponseEntity.ok(attendanceService.getAvailableSlots(batchID,courseId,date));
+    }
+    
 }

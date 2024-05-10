@@ -15,12 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AttendanceService {
@@ -124,6 +128,8 @@ public class AttendanceService {
         }
         if(takenSlots.isEmpty()){
             availableSlots.addAll(Arrays.asList("First Half","Second Half","Full Day"));
+        }else if(takenSlots.contains("First Half") && takenSlots.contains("Second Half")){
+            return Collections.emptyList();
         }
         else if(takenSlots.contains("First Half")){
             availableSlots.add("Second Half");
