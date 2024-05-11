@@ -54,7 +54,7 @@ public class AttendanceService {
         return null;
     }
 
-    private void updateExistingAttendanceDetail(Attendance record, String date, String type, String status) {
+    public void updateExistingAttendanceDetail(Attendance record, String date, String type, String status) {
         List<AttendanceDetail> attendanceList = record.getAttendance();
         for (AttendanceDetail obj : attendanceList) {
             if (obj.getDate().equals(date) && obj.getType().equals(type)) {
@@ -68,7 +68,7 @@ public class AttendanceService {
         attendanceRepository.save(record);
     }
 
-    private void createNewAttendanceRecord(Long batchId, Long courseId, Long userId, String date, String type,
+    public void createNewAttendanceRecord(Long batchId, Long courseId, Long userId, String date, String type,
             String status) {
         List<AttendanceDetail> attendanceList = new ArrayList<>();
         attendanceList.add(new AttendanceDetail(date, type, status));
