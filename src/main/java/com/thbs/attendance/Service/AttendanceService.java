@@ -76,43 +76,43 @@ public class AttendanceService {
         attendanceRepository.save(newAttendanceRecord);
     }
 
-    public List<EmployeeAttendanceDTO> getAttendanceDetails(Long batchID, Long courseId, String date, String type) {
+        public List<EmployeeAttendanceDTO> getAttendanceDetails(Long batchID, Long courseId, String date, String type) {
         List<EmployeeDTO> employees = batchService.getEmployeesByBatchId(batchID);
-        if (employees == null || employees.isEmpty()) {
-            throw new AttendenceRecordNotFound("Attendence record not found.");
-        }
         List<Attendance> attendances = attendanceRepository.findByBatchIdAndCourseId(batchID, courseId);
-        if (attendances.isEmpty()) {
-            throw new AttendenceRecordNotFound("Attendence record not found.");
-        }
+        if (!attendances.isEmpty()) {
+            Map<Long, String> attendanceMap = new HashMap<>();
 
-        Map<Long, String> attendanceMap = new HashMap<>();
-        for (Attendance attendance : attendances) {
-            for (AttendanceDetail detail : attendance.getAttendance()) {
-                if (detail.getDate().equals(date) && detail.getType().equals(type)) {
-                    attendanceMap.put(attendance.getUserId(), detail.getStatus());
+            for (Attendance attendance : attendances) {
+                for (AttendanceDetail detail : attendance.getAttendance()) {
+                    if (detail.getDate().equals(date) && detail.getType().equals(type)) {
+                        attendanceMap.put(attendance.getUserId(), detail.getStatus());
+                    }
                 }
             }
-        }
+            if (!attendanceMap.isEmpty()) {
+                List<EmployeeAttendanceDTO> response = new ArrayList<>();
+                for (EmployeeDTO employee : employees) {
+                    EmployeeAttendanceDTO employeeAttendanceDTO = new EmployeeAttendanceDTO();
+                    employeeAttendanceDTO.setEmployeeId(employee.getEmployeeId());
+                    employeeAttendanceDTO.setFirstName(employee.getFirstName());
+                    employeeAttendanceDTO.setLastName(employee.getLastName());
+                    employeeAttendanceDTO.setEmail(employee.getEmail());
+                    employeeAttendanceDTO.setBusinessUnit(employee.getBusinessUnit());
+                    employeeAttendanceDTO.setRole(employee.getRole());
 
-        List<EmployeeAttendanceDTO> response = new ArrayList<>();
-        for (EmployeeDTO employee : employees) {
-            EmployeeAttendanceDTO employeeAttendanceDTO = new EmployeeAttendanceDTO();
-            employeeAttendanceDTO.setEmployeeId(employee.getEmployeeId());
-            employeeAttendanceDTO.setFirstName(employee.getFirstName());
-            employeeAttendanceDTO.setLastName(employee.getLastName());
-            employeeAttendanceDTO.setEmail(employee.getEmail());
-            employeeAttendanceDTO.setBusinessUnit(employee.getBusinessUnit());
-            employeeAttendanceDTO.setRole(employee.getRole());
+                    String status = attendanceMap.get(employee.getEmployeeId());
+                    if (status != null) {
+                        employeeAttendanceDTO.setStatus(status);
+                    }
 
-            String status = attendanceMap.get(employee.getEmployeeId());
-            if (status != null) {
-                employeeAttendanceDTO.setStatus(status);
+                    response.add(employeeAttendanceDTO);
+                }
+                return response;
+            } else {
+                throw new AttendenceRecordNotFound("Attendence record not found.");
             }
-
-            response.add(employeeAttendanceDTO);
         }
-        return response;
+        throw new AttendenceRecordNotFound("Attendence record not found.");
     }
 
     public List<String> getAvailableSlots(long batchID,long courseId,String date){

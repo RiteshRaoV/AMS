@@ -22,6 +22,6 @@ public class AttendanceController {
     public ResponseEntity<Attendance> updateAttendance(@RequestBody AttendanceUpdateDTO attendanceData) {
         
         // Pass the Attendance object to the service for processing
-        return ResponseEntity.ok(attendanceService.processAttendanceUpdate(attendanceData)) ;
+        return ResponseEntity.ok(attendanceService.processAttendanceUpdate(attendanceData));
     }
 }

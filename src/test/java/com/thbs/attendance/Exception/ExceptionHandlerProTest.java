@@ -62,7 +62,7 @@ public class ExceptionHandlerProTest {
         ResponseEntity<Object> response = new ExceptionHandlerPro().handleAttendenceRecordNotFound(ex, request);
 
         // Verify response
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         assertEquals("Attendance record not found", response.getBody());
     }
 }

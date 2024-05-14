@@ -27,11 +27,8 @@ public class AttendanceHistoryController {
         
         List<EmployeeAttendanceDTO> attendanceDetails = attendanceService.getAttendanceDetails(batchID, courseId, date, type);
         
-        if (attendanceDetails != null && !attendanceDetails.isEmpty()) {
-            return ResponseEntity.ok(attendanceDetails);
-        }
+        return ResponseEntity.ok(attendanceDetails);
         
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No attendance data found");
     }
 
     @GetMapping("/attendance/batch/{batchID}/course/{courseId}/Date/{date}")

@@ -48,8 +48,7 @@ public class AttendanceHistoryControllerTest {
         verify(attendanceService, times(1)).getAttendanceDetails(batchID, courseId, date, type);
 
         // Check the response
-        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-        assertEquals("No attendance data found", responseEntity.getBody());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
