@@ -116,7 +116,7 @@ public class AttendanceService {
     }
 
     public List<String> getAvailableSlots(long batchID,long courseId,String date){
-        List<Attendance> attendances = attendanceRepository.findByBatchIdAndCourseId(batchID, courseId);
+        List<Attendance> attendances = attendanceRepository.findByBatchId(batchID);
         Set<String> takenSlots=new HashSet();
         List<String> availableSlots=new ArrayList<>();
         for(Attendance attendance:attendances){

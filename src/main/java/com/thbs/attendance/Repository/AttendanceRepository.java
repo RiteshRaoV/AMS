@@ -15,6 +15,8 @@ public interface AttendanceRepository extends MongoRepository<Attendance, String
 
     List<Attendance> findByBatchIdAndCourseId(Long batchId,Long courseId);
 
+    List<Attendance> findByBatchId(Long batchId);
+
 }
 
 
