@@ -15,25 +15,25 @@ import com.thbs.attendance.DTO.EmployeeDTO;
 import com.thbs.attendance.Service.BatchService;
 
 @RestController
-@RequestMapping("/batch")
+@RequestMapping("/attendance")
 public class BatchController {
 
     @Autowired
     BatchService batchService;
 
-    @GetMapping("/{batchId}/courses")
+    @GetMapping("/batch/{batchId}/courses")
     public ResponseEntity<BatchCourseDTO> getCourses(@PathVariable long batchId) {
         BatchCourseDTO batchCourseDTO = batchService.getCourses(batchId);
         return ResponseEntity.ok(batchCourseDTO);
     }
 
-    @GetMapping
+    @GetMapping("/batches")
     public ResponseEntity<List<BatchesDTO>> getBatches() {
         List<BatchesDTO> batchesDTO = batchService.getBatches();
         return ResponseEntity.ok(batchesDTO);
     }
 
-    @GetMapping("/employees/{batchId}")
+    @GetMapping("/batch/employees/{batchId}")
     public List<EmployeeDTO> getEmployeesByBatchId(@PathVariable long batchId) {
         return batchService.getEmployeesByBatchId(batchId);
     }
